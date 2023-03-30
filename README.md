@@ -1,4 +1,4 @@
-# An Integrated Management System for Composed Applications Deployed by Different Deployment Automation Technologies
+# An Integrated Management System
 
 This setup guide provides you with instructions to run the case study of the SNCS Paper [An Integrated Management System for Composed Applications Deployed by Different Deployment Automation Technologies]().
 
