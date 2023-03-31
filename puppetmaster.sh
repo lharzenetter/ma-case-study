@@ -85,7 +85,7 @@ sudo service postgresql start
 sudo -E sed -ie "/\[main\]/i dns_alt_names        = puppet,$puppetDNS \n\
 storeconfigs         = true \n\
 storeconfigs_backend = puppetdb \n\
-reports              = store,puppetdb \n\" /etc/puppetlabs/puppet/puppet.conf
+reports              = store,puppetdb \n" /etc/puppetlabs/puppet/puppet.conf
 
 sudo echo "---
 server:
