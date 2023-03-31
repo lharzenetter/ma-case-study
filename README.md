@@ -21,131 +21,16 @@ Setup a VM running Ubuntu 22.04 on any platform you like.
 As the Puppet agent will be running on a VM, ensure that your secuirty settings allow the Puppet Primary Server to accept incoming connections from the Puppet Agent.
 Make the VM available via DNS/IP so that the Puppet Agent can later connect to the Primary Server.
 
-Now, we can start to setup Puppet and PostgreSQL on the primary server.
-To do this, enter following command on the Puppet primary server:
+**NOTE**: You can either run the script [puppetmaster.sh](./puppetmaster.sh) or follow [this guide](https://github.com/UST-EDMM/edmm/blob/master/TOSCin/readme.md).
+> When running the script, you **MUST** enter the password to the puppetdb manually when prompted!!
 
 ```shell script
-wget https://apt.puppetlabs.com/puppet7-release-jammy.deb
-sudo dpkg -i puppet7-release-jammy.deb
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo apt update
-sudo apt -y install postgresql puppetserver
+chmod +x ./puppetmaster.sh
+sudo -E IP=2.2.1.1 puppetDNS=puppet-master.test.com ./puppetmaster.sh
 ```
 
-Puppet is installed now!
-Now we are going to configure the Puppet primary server. To do this, make following changes to the
-puppet.conf file:
-`sudo nano /etc/puppetlabs/puppet/puppet.conf`.
+The script currently only runs on Ubunbtu 20.04. 22.04 is not yet supported by Puppet and Postgres
 
-```
-[main]
-certname    = puppet-primary.example.com
-server      = puppet-primary.example.com
-environment = production
-runinterval = 1y
-```
-
-Now, we setup the certificate authority by running:
-
-```shell script
-sudo /opt/puppetlabs/bin/puppetserver ca setup
-```
-
-Once this is finished, we can start the Puppet primary server with following two commands:
-
-```shell script
-sudo systemctl enable puppetserver
-sudo systemctl start puppetserver
-```
-
-Then, we are able to install PuppetDB. First, run these commands:
-
-```shell script
-sudo /opt/puppetlabs/bin/puppet resource package puppetdb ensure=latest
-sudo /opt/puppetlabs/bin/puppet resource package puppetdb-termini ensure=latest
-```
-
-Now, it is required to configure PuppetDB.
-To do this, run the following command to create the first config file that isrequired:
-
-```shell script
-sudo nano /etc/puppetlabs/puppet/puppetdb.conf
-```
-
-And add the following content:
-
-```puppet
-[main]
-server_urls = https://puppet-primary.example.com:8081
-```
-
-Then, configure the puppetDB config file:
-
-```sudo nano /etc/puppetlabs/puppetdb/conf.d/database.ini```
-
-```puppet
-[database]
-# The database address, i.e. //HOST:PORT/DATABASE_NAME
-subname = //localhost:5432/puppetdb
-# Connect as a specific user
-username = puppetdb
-# Use a specific password
-password = puppetdb
-# How often (in minutes) to compact the database
-# gc-interval = 60
-```
-
-Now, edit the `sudo nano /etc/puppetlabs/puppet/puppet.conf` file by appending the following lines to the `[server]` section:
-
-```puppet
-dns_alt_names        = puppet,puppet-primary server.test.com
-storeconfigs         = true
-storeconfigs_backend = puppetdb
-reports              = store,puppetdb
-```
-
-Further, create a `routes.yaml` file in the same directory (`sudo nano /etc/puppetlabs/puppet/routes.yaml`) with the
-following content:
-
-```yaml
----
-server:
-  facts:
-    terminus: puppetdb
-    cache: yaml
-```
-
-Now, run the following four commands to configure the PostgreSQL database to use it with PuppetDB. When prompted,
-enter `puppetdb` as password.
-
-```shell script
-sudo -u postgres sh
-createuser -DRSP puppetdb
-createdb -E UTF8 -O puppetdb puppetdb
-psql puppetdb -c 'create extension pg_trgm'
-exit
-```
-
-Now, restart the database:
-
-```shell script
-sudo service postgresql restart
-```
-
-Finally, start the PuppetDB up by firing this command:
-
-```shell script
-sudo /opt/puppetlabs/bin/puppet resource service puppetdb ensure=running enable=true
-```
-
-As a last step, we need to restart the Puppet server on the Puppet primary server. This can be done for example by following
-commands:
-
-```shell script
-sudo kill -HUP `pgrep -f puppet-server`
-sudo service puppetserver reload
-```
 
 As the Puppet Primary server is now operational, you can upload the configuration files from [puppet-master-environment](puppet-master-environment) to the primary server.
 First replace the node selector in the [Manifest](puppet-master-environment/manifests/site-aws.pp) with the cert name you later intend to specifiy for the Puppet Agent Node.
