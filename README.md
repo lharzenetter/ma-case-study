@@ -61,6 +61,20 @@ In both files replace the security group id and the key name with the id of the 
 When using CloudFormation you must also replace the user data in the template with the base64 encoded content of your [puppet-setup.yaml](puppet-agent-setup/puppet-setup.yaml).
 Create the instance by either running `terraform apply` or by uploading the [CloudFormation template](puppet-agent-setup/aws-cloudformation-template.json) using the AWS ManagementConsole or CLI.
 
+Alternatively, you can install the agent using the [agent script](puppetagent.sh):
+
+```script
+sudo -E IP=[IP] PuppetMaster=[MasterIP] ./agent.sh
+```
+
+Afterwards, you have to sign the agent at the server:
+
+```script
+sudo /opt/puppetlabs/bin/puppetserver ca list
+sudo /opt/puppetlabs/bin/puppetserver ca sign --certname puppet-agent
+```
+
+
 After the EC2 instance is running, the puppet agent is automatically installed on it and should automatically connect to the puppet primary server.
 If the automatic connection fails, log in to the instance using your previously created key pair and execute the following command:
 
