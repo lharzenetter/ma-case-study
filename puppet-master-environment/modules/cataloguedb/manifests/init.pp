@@ -18,6 +18,6 @@ class cataloguedb {
     password => 'default_password',
     host     => '%',
     grant    => ['ALL PRIVILEGES'],
-    sql      => '/usr/local/etc/catalogue-db-import.sql'
+    sql      => ['/usr/local/etc/catalogue-db-import.sql']
   }
 }

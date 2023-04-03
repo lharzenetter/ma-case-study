@@ -107,3 +107,5 @@ sudo kill -HUP `pgrep -f puppet-server`
 sudo service puppetserver reload
 
 echo "Done installing Puppet!"
+
+sudo /opt/puppetlabs/bin/puppet module install puppetlabs-mysql --version 13.2.0

@@ -1,4 +1,4 @@
-node 'puppet-aws-agent.example.com' {
+node default {
   include cataloguedb
   include catalogueapp
 }
