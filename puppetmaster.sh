@@ -34,8 +34,8 @@ export DEBIAN_FRONTEND="noninteractive" TZ="UTC"
 echo "Europe/Berlin" > /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 
-wget "https://apt.puppetlabs.com/puppet7-release-${lsb_release}.deb"
-sudo dpkg -i puppet7-release-${lsb_release}.deb
+wget "https://apt.puppetlabs.com/puppet6-release-${lsb_release}.deb"
+sudo dpkg -i puppet6-release-${lsb_release}.deb
 #sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt ${lsb_release}-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 #wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt-get update

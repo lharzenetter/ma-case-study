@@ -146,7 +146,7 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: public.ecr.aws/s9j5x8n9/sock-shop-frontend:0.0.5
+        image: lharzenetter/sockshopfrontend
         resources:
           limits:
             cpu: 300m
@@ -159,6 +159,8 @@ spec:
         env:
         - name: SESSION_REDIS
           value: "true"
+        - name: CATALOGUE_ENDPOINT
+          value: "http://574575cb-7591-4dac-a436-adfe2a1d605f.ma.bw-cloud-instance.org:8088"
         securityContext:
           runAsNonRoot: true
           runAsUser: 10001

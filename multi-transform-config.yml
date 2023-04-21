@@ -2,33 +2,24 @@ model-name: case-study
 technology-instances:
   kubernetes:
     sock-shop:
-      kube-config-path: [\path\to\.kube\config]
+      kube-config-path: C:/Users/lharz/.kube/config
       target-namespace: sock-shop
       ignored-container-names:
         - "queue-master"
         - "rabbitmq"
         - "rabbitmq-exporter"
         - "session-db"
-#        - "carts"
         - "payment"
         - "shipping"
         - "user"
         - "user-db"
-#        - "front-end"
-#        - "orders"
-#        - "orders-db"
   puppet:
     catalogue:
-      user: [os username]
-      ip: [primary server ip address]
-      private-key-path: [\path\to\.ssh\puppet-master]
+      user: ubuntu
+      ip: 193.196.53.189
+      private-key-path: C:/Users/lharz/.ssh/BWCloud.pem
       environment: production
-#  terraform:
-#    desktop-local:
-#      state-file: \path\to\terraform.tfstate
-  cloud-formation:
-    catalogue:
-      region: eu-central-1
-      stack-name: [stack name]
-      profile-name: TOSCin
+  terraform:
+   desktop-local:
+     state-file: C:/git-repos/lharzenetter/multi-deployment-technologies-example/puppet-agent-setup/openstack/terraform.tfstate
 

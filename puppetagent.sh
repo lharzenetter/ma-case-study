@@ -46,8 +46,8 @@ export DEBIAN_FRONTEND="noninteractive" TZ="UTC"
 echo "Europe/Berlin" > /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 
-wget "https://apt.puppetlabs.com/puppet7-release-${lsb_release}.deb"
-sudo dpkg -i puppet7-release-${lsb_release}.deb
+wget "https://apt.puppetlabs.com/puppet6-release-${lsb_release}.deb"
+sudo dpkg -i puppet6-release-${lsb_release}.deb
 sudo apt-get update
 sudo apt-get install -y puppet-agent
 

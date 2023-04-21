@@ -1,4 +1,8 @@
-.terraform/providers/
+.terraform/
 .idea/
 
 *.zip
+*.zip
+
+*.hcl
+*openrc.sh

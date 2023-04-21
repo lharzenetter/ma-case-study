@@ -1,0 +1,20 @@
+# This is a clouds.yaml file, which can be used by OpenStack tools as a source
+# of configuration on how to connect to a cloud. If this is your only cloud,
+# just put this file in ~/.config/openstack/clouds.yaml and tools like
+# python-openstackclient will just work with no further config. (You will need
+# to add your password to the auth section)
+# If you have more than one cloud account, add the cloud entry to the clouds
+# section of your existing file and you can refer to them by name with
+# OS_CLOUD=openstack or --os-cloud=openstack
+clouds:
+  bw-cloud:
+    auth:
+      auth_url: https://idm02.bw-cloud.org:5000/v3
+      application_credential_id: "59eefee37d3f48ca9b048b1dde2bc2f6"
+      application_credential_secret: "i7_tQTm69JhUxZvCrmrhu084LralH9PECpvQFkWb45oE2GJdUqYvC3fZ63kdTtn9BqSDvDMMdlMIGR0gUX3Pyg"
+    region_name: "Mannheim"
+
+    interface: "public"
+    identity_api_version: 3
+    auth_type: "v3applicationcredential"
+
